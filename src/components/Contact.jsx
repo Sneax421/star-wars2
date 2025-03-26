@@ -16,6 +16,7 @@ const Contact = () => {
 
     useEffect(() => {
         fetchPlanets();
+        return () => console.log('Component Contact was unmounted');
     },[])
 
 
