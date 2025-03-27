@@ -14,10 +14,10 @@ function App() {
                 page,
                 changePage: setPage
             }}>
-                <Header changePage={setPage}/>
-                <Main page={page}/>
-                <Footer/>
+                <Header/>
+                <Main/>
             </StarWarsContext.Provider>
+            <Footer/>
         </div>
     )
 }
