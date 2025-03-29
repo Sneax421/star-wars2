@@ -39,13 +39,24 @@
 // export default AboutMe;
 
 
-
 import {base_url} from "../utils/constants.js";
 import {useEffect, useState} from "react";
 
 const AboutMe = () => {
     const [hero, setHero] = useState();
     useEffect(() => {
+
+        const hero = localStorage.getItem("hero");
+        const now = Date.now();
+        const expirationDate = 30 * 24 * 60 * 60 * 1000;
+        if (hero) {
+            const {timestamp, data} = JSON.parse(hero);
+            if (now - timestamp < expirationDate) {
+                setHero(data);
+                return;
+            }
+        }
+
         fetch(`${base_url}/v1/peoples/1`)
             .then(response => response.json())
             .then(data => {
@@ -60,7 +71,9 @@ const AboutMe = () => {
                     eye_color: data.eye_color
                 }
                 setHero(info);
+                localStorage.setItem("hero", JSON.stringify({timestamp: now, data: info}));
             })
+
     }, [])
 
     return (
