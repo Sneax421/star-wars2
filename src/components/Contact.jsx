@@ -11,10 +11,20 @@ const Contact = () => {
         const data = await response.json();
         const planets = data.map(item => item.name);
         setPlanets(planets);
-
+        localStorage.setItem('planet', JSON.stringify(planets));
     }
 
     useEffect(() => {
+        const planet = localStorage.getItem('planet');
+        const now = Date.now();
+        const expirationDate = 30 * 24 * 60 * 60 * 1000;
+        if(planet){
+            const {timestamp, data} = JSON.parse(planet);
+            if (now - timestamp < expirationDate) {
+                setPlanets(data);
+                return;
+            }
+        }
         fetchPlanets();
         return () => console.log('Component Contact was unmounted');
     },[])
